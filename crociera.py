@@ -57,15 +57,6 @@ class Crociera:
     def assegna_passeggero_a_cabina(self, codice_cabina, codice_passeggero):
         """Associa una cabina a un passeggero"""
         # TODO
-        #La classe Crociera deve prevedere inoltre un metodo per l’assegnazione di un
-        # passeggero a una cabina, chiamato assegna_passeggero_a_cabina(codice_cabina, codice_passeggero).
-        # Quando viene effettuata una prenotazione, il sistema deve verificare
-        # che la cabina e il passeggero esistano, che la cabina sia effettivamente
-        # disponibile e che il passeggero non sia già associato a un’altra cabina.
-        # Se tutte le condizioni sono soddisfatte, la cabina viene contrassegnata
-        # come non disponibile e viene registrata l’associazione tra passeggero e cabina.
-        # Se una delle verifiche non va a buon fine, il metodo deve sollevare un’eccezione
-        # per segnalare l’errore.
 
         cabina_disponibile = False
         passeggero_disponibile = False
