@@ -69,13 +69,13 @@ class Crociera:
         """Associa una cabina a un passeggero"""
         # TODO
 
-        cabina_disponibile = False
-        passeggero_disponibile = False
+        cabina_assegnata = False
+        passeggero_assegnato= False
 
         for cabina in self._cabina_animali:
             if cabina._codice_cabina == codice_cabina and codice_cabina not in self._cabine:
                 self._cabine.append(codice_cabina)
-                cabina_disponibile = True
+                cabina_assegnata = True
                 cabina._disponibile = 'Non disponibile'
 
                 break
@@ -83,7 +83,7 @@ class Crociera:
         for cabina in self._cabina_deluxe:
             if cabina._codice_cabina == codice_cabina and codice_cabina not in self._cabine:
                 self._cabine.append(codice_cabina)
-                cabina_disponibile = True
+                cabina_assegnata = True
                 cabina._disponibile = 'Non disponibile'
 
                 break
@@ -91,7 +91,7 @@ class Crociera:
         for cabina in self._cabina_standard:
             if cabina._codice_cabina == codice_cabina and codice_cabina not in self._cabine:
                 self._cabine.append(codice_cabina)
-                cabina_disponibile = True
+                cabina_assegnata = True
                 cabina._disponibile = 'Non disponibile'
 
                 break
@@ -99,28 +99,31 @@ class Crociera:
         for passeggero in self._info_passeggeri:
             if passeggero._codice_passeggero == codice_passeggero and codice_passeggero not in self._passeggeri:
                 self._passeggeri.append(codice_passeggero)
-                passeggero_disponibile = True
+                passeggero_assegnato = True
 
                 break
 
-        if cabina_disponibile == True and passeggero_disponibile == True:
+        if cabina_assegnata == True and passeggero_assegnato == True:
             self._comb.append((codice_cabina, codice_passeggero))
             print(f'{codice_cabina} - {codice_passeggero}')
             return True
 
-        if cabina_disponibile == False and passeggero_disponibile == False:
+        if cabina_assegnata == False and passeggero_assegnato == False:
             raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
                             '----------------------------------------------- \n '
                             '- CABINA GIA ASSEGNATA OPPURE NON ESISTENTE \n '
                             '- PASSEGGERO GIA ASSEGNATO OPPURE NON ESISTENTE')
 
-        if cabina_disponibile == True and passeggero_disponibile == False:
+
+        if cabina_assegnata == True and passeggero_assegnato == False:
+            self._cabine.remove(codice_cabina)
             raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
                             '----------------------------------------------- \n'
                             '- CABINA DISPONIBILE \n'
                             '- PASSEGGERO GIA ASSEGNATO OPPURE NON ESISTENTE')
 
-        if cabina_disponibile == False and passeggero_disponibile == True:
+        if cabina_assegnata == False and passeggero_assegnato == True:
+            self._passeggeri.remove(codice_passeggero)
             raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
                             '----------------------------------------------- \n'
                             '- CABINA GIA ASSEGNATA OPPURE NON ESISTENTE \n'
