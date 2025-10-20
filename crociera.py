@@ -8,14 +8,14 @@ class Crociera:
     def __init__(self, nome):
         """Inizializza gli attributi e le strutture dati"""
         # TODO
-        self._nome = nome
-        self._info_passeggeri = []
-        self._cabina_standard = []
-        self._cabina_animali = []
-        self._cabina_deluxe = []
-        self._cabine = []
-        self._passeggeri = []
-        self._comb = []
+        self._nome = nome               #nome della crociera
+        self._info_passeggeri = []      #informazioni sui passeggeri
+        self._cabina_standard = []      #informazioni sulle cabine standard
+        self._cabina_animali = []       #informazioni sulle cabine con animali
+        self._cabina_deluxe = []        #informazioni sulle cabine deluxe
+        self._cabine = []               #lista con i codici delle cabine assegnate
+        self._passeggeri = []           #lista con i codici dei passeggeri assegnati
+        self._comb = []                 #lista con la combinazione di (codice_cabina, codice_passeggero)
         
     """Aggiungere setter e getter se necessari"""
 
@@ -23,10 +23,11 @@ class Crociera:
     @property
     def nome(self):
         return self._nome
+
     @nome.setter
     def nome(self, set_nome):
         if set_nome == "":
-            raise ValueError("Il nome non puo essere vuoto!")
+            raise ValueError("IL CAMPO DEL NOME NON PUO' ESSERE VUOTO")
         self._nome = set_nome
 
     def carica_file_dati(self, file_path):
@@ -44,15 +45,25 @@ class Crociera:
                 if len(riga) == 5:
                     try:
                         val = int(riga[4])
-                        self._cabina_animali.append(Animali(riga[0], riga[1], riga[2], riga[3], val))
+
+                        animali = Animali(riga[0], riga[1], riga[2], float(riga[3]), val)
+
+                        animali.assegna_prezzo_animali()
+
+                        self._cabina_animali.append(animali)
+
                     except ValueError:
                         val = str(riga[4])
-                        self._cabina_deluxe.append(Deluxe(riga[0], riga[1], riga[2], riga[3], val))
+                        deluxe = Deluxe(riga[0], riga[1], riga[2], float(riga[3]), val)
+
+                        deluxe.assegna_prezzo_deluxe()
+
+                        self._cabina_deluxe.append(deluxe)
 
             infile.close()
 
         except FileNotFoundError:
-            raise FileNotFoundError('File non trovato')
+            raise FileNotFoundError('FILE NON TROVATO')
 
     def assegna_passeggero_a_cabina(self, codice_cabina, codice_passeggero):
         """Associa una cabina a un passeggero"""
@@ -98,13 +109,22 @@ class Crociera:
             return True
 
         if cabina_disponibile == False and passeggero_disponibile == False:
-            raise Exception('cabina falsa passeggero falso')
+            raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
+                            '----------------------------------------------- \n '
+                            '- CABINA GIA ASSEGNATA OPPURE NON ESISTENTE \n '
+                            '- PASSEGGERO GIA ASSEGNATO OPPURE NON ESISTENTE')
 
         if cabina_disponibile == True and passeggero_disponibile == False:
-            raise Exception('cabina vero passeggero falso')
+            raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
+                            '----------------------------------------------- \n'
+                            '- CABINA DISPONIBILE \n'
+                            '- PASSEGGERO GIA ASSEGNATO OPPURE NON ESISTENTE')
 
         if cabina_disponibile == False and passeggero_disponibile == True:
-            raise Exception('cabina falso passeggero vero')
+            raise Exception('ASSEGNAZIONE NON DISPONIBILE: \n'
+                            '----------------------------------------------- \n'
+                            '- CABINA GIA ASSEGNATA OPPURE NON ESISTENTE \n'
+                            '- PASSEGGERO DISPONIBILE')
 
 
     def cabine_ordinate_per_prezzo(self):
@@ -134,7 +154,7 @@ class Crociera:
                 if codice_passeggero == p._codice_passeggero:
                     cabina = codice_cabina
                     break
-            print(p._codice_passeggero, p._nome_passeggero, p._cognome_passeggero, cabina)
+            print(f'Codice passeggero: {p._codice_passeggero} - Nome: {p._nome_passeggero} - Cognome: {p._cognome_passeggero} - Cabina: {cabina}')
 
 
 
